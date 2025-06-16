@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // higher order fungsi itu adalah = fungsi yang beroprasi pada fungsi yang lain, baik itu didalam argumen maupun sebagai return value, karena didalam js, sebuah fungsi itu disebut dengan first class function yang merupakan sebuah OBJEK, jadi bisa dijadikan argumen, bisa dijadikan return value, bisa dijadikan variabel.
+
+
+        // jadi higher order function itu adalah fungsi yang beroprasi pada fungsi lain, yang salah satu contohnya adalah map, filter, dll karena ada fungsi filter yang emempunyai fungsi lagi didalam parameternya
+
+
+        // contoh 
+        // ini pake array yang isinya itu adalah seuah objek objek
+        const salesData = [
+        { month: 'Januari', sales: 100 },
+        { month: 'Februari', sales: 200 },
+        { month: 'Maret', sales: 300 },
+        // ...
+        ];
+
+        const MesinPemcari = (array, bulan) => {
+            return array.filter(x => x.month === bulan).map(x => x.sales) // ini juga yg map bisa pake forEach deh
+        }
+
+        console.log(MesinPemcari(salesData, 'Januari'))
+
+
+        // const dapetSales  = (array, month) => {
+        //     return array.filter(x => x.month === month).map(x => x.sales);
+        //     // x.month === month memeriksa apakah properti month dari objek x sama dengan parameter month yang diberikan.
+        //     // x => x.sales adalah fungsi callback yang mengambil properti sales dari setiap objek x.
+        //  };
+
+
+
+        // const getSalesReport = (data, month) => {
+        // return data.filter(x => x.month === month).map(x => x.sales);
+        // };
+
+        // const januariSales = getSalesReport(salesData, 'Januari');
+        // console.log(januariSales); // [100]
+        console.log("==============")
+
+
+        // contoh lagi
+        // ini pake array yang isinya itu adalah seuah objek objek
+        const stockData = [
+        { product: 'Produk A', category: 'Kategori A', stock: 100 },
+        { product: 'Produk B', category: 'Kategori B', stock: 200 },
+        { product: 'Produk C', category: 'Kategori A', stock: 300 },
+        // ...
+        ];
+
+
+        const MesinPencariLagih = (array, ...stock_user) => {
+            return array.filter(x => stock_user.includes(x.stock)).map(x => ({
+                product: x.product,
+                stock: x.stock
+            }))
+        }
+        const MesinPencariLagih2 = (array, ...stock_user) => {
+            return array.filter(x => stock_user.includes(x.stock)).reduce((acc, data) => {
+                // ini kalo di buat array lagi
+
+                // jadi disetiap perulangan kit akan push sebuah objek ke dalam array acc, yang berisi product dan stock dari data yang sedang diproses.
+                acc.push({
+                    product: data.product,
+                    stock: data.stock
+                })
+                return acc
+
+                // // ini slah
+                // acc[data.product] = data.product,
+                // acc[data.stock] = data.stock
+                // return acc
+            }, [])
+        }
+        console.log(MesinPencariLagih2(stockData,100,200,300),"ini lagi nih")
+        console.log(MesinPencariLagih(stockData,100,200,300))
+
+            // PENJELASAN
+            //     filter(x => stock_user.includes(x.stock)) akan memeriksa apakah stock dari setiap item di stockData ada dalam array stock_user.
+            // Jika ada, item tersebut akan disimpan dalam hasil filter.
+
+
+        // buat dulu fungsinya
+        //  const dapetStock = function(array, category){
+        //     return array.filter(x => x.category === category).map(x => x.stock)
+        //  }
+        //  console.log(dapetStock(stockData, 'Kategori A'))
+
+
+
+
+
+        // const getStockReport = (data, category) => {
+        // return data.filter(x => x.category === category).map(x => x.stock);
+        // };
+        // // jadi pertama itu di filter dulu dan dicek apakah sama, kemudian kalo sama maka akan di ambil bgian yang sama itu, ini adalah onoth dari higher order function
+
+        // const kategoriASales = getStockReport(stockData, 'Kategori A');
+        // console.log(kategoriASales); // [100, 300]
+
+
+
+
+        console.log("=================")
+
+        // contoh lagi
+        function kerjakantugas(mataKuliah, selesai) {
+            console.log(`mulai mengerjakan tugas ${mataKuliah}`);
+            selesai();
+        }
+
+        function selesai(){
+            console.log("tugas sudah selesai")
+        }
+        kerjakantugas("informatika",selesai)
+
+        // jadi kerjakantugas ini adalah higher order function, dan fungsi selesai yang ada didalam fungsi kerjakantugas, maka ini disebut callback function
+
+
+
+        // contoh lagi
+
+        // jadi settimeout ini adalah higher order function karena didalam parameternya menggunakan sebuah fungsi yang disebut callback
+
+        // setTimeout(function(){
+        //     console.log("hello semua")
+        // } , 1000)
+
+        // console.log("===============")
+
+        // contoh lagi
+
+        // nah ini juga merupakan sebuah contoh dari higher order function
+
+        /* const tombol = document.querySelector(".submit");
+            tombol.addEventlistener("click", function(){
+                console.log("tombol ditekan")
+            }) */
+
+
+        // dan fungsi yang bisa disebut  higher order function itu juga ketika sebuah fungsi mereturn sebuah fungsi lagi, jadi closures juga termasuk kedalam higher order function, dan rekursif juga sebuah higher order function karena mereturn sebuah fungsi lagi
+
+        // contoh lagi
+        function repeat(n, aksi){
+            for(i=0; i<n ; i++){
+                aksi(i)
+            }
+        }
+        repeat(4,console.log)
+        // repeat(5, alert)
+
+        function ulang(n, repeat){
+            for(i=0;i<n;i++){
+                repeat(i)
+            }
+        }
+        ulang(5, console.log)
+
+
+
+        console.log("tes doang dibawah");
+
+        function rafa(callback){
+            let data = prompt("masukan nama anda : ");
+            callback(data)
+        }
+
+        rafa(e => {
+            console.log(`nama kamu adalah ${e}`)
+        })
+    </script>
+</body>
+</html>

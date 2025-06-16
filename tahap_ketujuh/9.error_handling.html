@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rafa Movies 2</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <center>
+        <div class="container">
+            <div class="row mt-4">
+              <div class="col">
+                <h1>Rafa Khadafi Database Fetch</h1>
+                <h3></h3>
+              </div>
+            </div>
+            
+            <div class="row" style="margin-left: 25%;">
+              <div class="col-md-8">
+                  <div class="input-group mb-3">
+                      <input type="text" class="form-control input-keyword" placeholder="Search Movie..."aria-describedby="button-addon2">
+                      <button class="btn btn-outline-primary search-button" type="button" id="button-addon2">Search</button>
+                  </div>              
+              </div>
+            </div>      
+    </center>
+      <div class="row movie-container"></div>
+    </div>
+
+    <!-- awal modal  -->
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="movie-detail-modal"
+      tabindex="-1"
+      aria-labelledby="movie-detail-modal Label"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="movie-detail-modal Label">
+              Modal title
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- akhir modal -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+
+
+        // kita menggunakan eror handling
+        // kalo pake promise biasa kita bisa pake then dan catch buat eror handling
+
+        // kalo pake async dan await kita bisa pake try dan catch() buat eror handling
+
+        // kita coba menggunakan fetch yang mereturn sebuah promise
+
+
+    const seacrhButton = document.querySelector(".search-button")
+    seacrhButton.addEventListener("click", async function(){
+        const inputSeacrh = document.querySelector(".input-keyword")
+
+        // disini kita tangkep erornya karena ini belum bisa menangkap errornya
+        try {
+            const movies = await getmovies(inputSeacrh.value); 
+            updateUi(movies);
+        }catch(err) {
+            const h3tes = document.querySelector("h3")
+            h3tes.textContent = `Maaf, ada kesalahan ${err}`;
+            // itu ga akan bisa, karena sebenarnya error yang ada di fetch itu adalah eror yang ada pada networknya, dan eror yag kmu tangkp sekarang bukan dari fetch, tapi dari eror yang lain TypeError: movies is undefined
+            console.log(err)
+
+            // makanya kita harus lempar eror yang ada di dalam fetchnya kesini agar terbaca
+        }
+    })
+
+
+    document.addEventListener("click", async function(e){ 
+       if(e.target.classList.contains("modal-detail-button")) { 
+        try {
+            const imdbid = e.target.dataset.imdbid;
+            const moviedetail = await getmoviesdetail(imdbid);
+            updateUiDetail(moviedetail);
+        } catch (err) {
+            const modalBodyerr = document.querySelector(".modal-body")
+            modalBodyerr.textContent  = ` maaf ges ${err}`
+        }
+       }
+    })
+
+
+    // fungsi fungsi
+
+    // fetch pertama
+    function getmovies(keyword){
+        return fetch(`http://www.omdbapi.com/?apikey=98d1d349&s=${keyword}`)
+                .then((response) => {
+                    console.log(response)
+                    // isi dari response ada banyak, salah satunya adalah Response { type: "cors", url: "http://www.omdbapi.com/?apikey=98d1d349&s=", redirected: false, status: 200, ok: true, statusText: "OK", headers: Headers(4), body: ReadableStream, bodyUsed: false }, jadi ada kode status dll, jadi kalo kosong atau cari film yang tidak ada, itu sebenarnya itu masih benar dan kode statusnya 200, nah jika fetch nya gagal (misal salah apikey), maka kode statusnya adalah 401
+                    if(!response.ok) { // kalo responsenya not ok / gagal
+                        // maka kita akan kirim kan erornya dan kita lempar ke atas yang bagian try dan catch()
+
+                        throw new Error(response.statusText)
+                    }else {
+                        return response.json();
+                    }
+                })
+                .then((response) => {
+                //disini kita ceklagi
+                console.log(response) //Object { Response: "False", Error: "Incorrect IMDb ID." }
+                if(response.Response === "False"){
+                    throw new Error(response.Error)
+                }else {
+                    return response.Search
+                }
+        })
+    }
+
+    function updateUi(movies){
+        let cards = "";
+        movies.forEach(element => {
+                cards += ShowCards(element)
+                const movieContainer = document.querySelector(".movie-container")
+                movieContainer.innerHTML = cards;
+        });
+    }
+    
+
+    // fetch kedua
+    function getmoviesdetail(dataId){
+        return fetch(`http://www.omdbapi.com/?apikey=98d1d349&i=${dataId}`)
+                .then((response) => {
+                    if(!response.ok) {
+                        throw new Error(response.Error)
+                    } else {
+                        return response.json()
+                    }
+                })
+                .then((hasildetail) => {
+                    if(hasildetail.Response === "False"){
+                        throw new Error(hasildetail.Error)
+                    }else {
+                        return hasildetail;
+                    }
+                })
+    }
+
+    function updateUiDetail(moviedetaildariatas){
+        const moviedetail = ShowDetail(moviedetaildariatas); 
+        const modalbody = document.querySelector(".modal-body");
+        modalbody.innerHTML = moviedetail
+    }
+
+    function ShowCards(element){
+            return `<div class="col-md-3 my-3">
+                                <div class="card">
+                                    <img src="${element.Poster}" class="card-img-top">
+                                    <div class="card-body">
+                                    <h5 class="card-title">${element.Title}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">${element.Year}</h6>
+                                    <a href="#" class="btn btn-primary modal-detail-button" 
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#movie-detail-modal"
+                                    // data-imdbid="${element.imdbID}">Show Details</a>
+                                    </div>
+                                </div>
+                            </div>`
+        }
+
+
+        function ShowDetail(hasil){
+            return `
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            <img src="${hasil.Poster}" class="img-fluid" />
+                                            </div>
+                                            <div class="col-md">
+                                            <ul class="list-group">
+                                                <li class="list-group-item"><h4>${hasil.Title} ${hasil.Year}</h4></li>
+                                                <li class="list-group-item">
+                                                <strong>Director : </strong>${hasil.Director}
+                                                </li>
+                                                <li class="list-group-item"><strong>Actors : </strong>${hasil.Actors}</li>
+                                                <li class="list-group-item"><strong>Awards : </strong>${hasil.Awards}</li>
+                                                <li class="list-group-item">
+                                                <strong>Plot : </strong> <br/> 
+                                                ${hasil.Plot}
+                                                </li>
+                                            </ul>
+                                            </div>
+                                        </div>
+                                        </div>`
+        }
+
+
+    </script>
+  </body>
+</html>

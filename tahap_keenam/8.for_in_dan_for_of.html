@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul>
+        <li class="nama">rafa</li>
+        <li class="nama">jamal</li>
+        <li class="nama">udin</li>
+    </ul>
+    <script>
+
+        // jadi kalo kamu mau looping property dari objek maka pakenya for in , kalo kamu mau mengulang isi array dan itereble objek yang lain maka bisa pake for of
+
+
+        // for in dan for of
+        // 1. for in itu untuk mengambil key dari sebuah objek, adalah hanya untuk enumereble yang dimaksud enumereble adalah property dari objek yang bisa dihitung, seperti array, string, map, set, arguments, nodeList(melakukan querry pada dom), user-defined-itereble(itereble yg dibuat sendiri) dan lainnya.
+
+        const mhs3 = {
+            nama:"jamal",
+            umur:20,
+            alamat:"solo"
+        }
+
+        // for (const m of mhs3){
+        //     console.log(m);
+        // } ini gabisa karena mhs3 bukan array atau string atau map atau set atau arguments atau nodeList atau user-defined-it, atau bukan bagian dari itereble objek
+        // makanya kita pake in
+
+        for ( const m in mhs3){
+            console.log(m)
+        }
+
+        console.log("============")
+        for ( const m in mhs3){
+            console.log(mhs3[m],"tesaja")
+        }
+console.log("============")
+
+
+
+        // 2. for of itu untuk mengambil value dari sebuah objek, adalah sebuah loop yang digunakan untuk mengulang elemen dari objek yang itereble atau bisa diulang seperti array, string, map, set, arguments, nodeList(melakukan querry pada dom), user-defined-itereble(itereble yg dibuat sendiri) dan lainnya.
+
+        // 1.for of array
+        const mhs = ["udin", "muhaimin", "jamal"];
+        // bisa pake for biasa, atau forEach
+
+        // ini karena array ini salah satu dari itereble objek maka kita bisa pake for of
+
+        for (const m of mhs){
+            // jadi m itu di anggap sebagai setiap elemen atau value dari array mhs
+            console.log(m);
+        }
+        console.log("================")
+        // 2 for of string
+        // nah kalo pake for of kita bisa loop srtring, namun forEach tidak bisa karena khusus untuk array saja
+        let str = "jamal";
+        for (const s of str){
+            console.log(s);
+        }
+        // tapi kalo di foreach itu kan parameter keduanya adalah sebagai indexnya, tapi kalo for of itu tidak mempunyai index, jadi hanya value saja, tapi bisa pake method entries
+        console.log("================")
+        // 3. for of pake index bisa pake entries
+        // for (const m of mhs.entries()){
+        //     console.log(`${m} adalah mahasiswa ke-${i + 1}`);
+        // }
+
+        // nah kita destructio saja jadi tangkep index dan juga elemennya
+        for (const [i, m] of mhs.entries()){ // entries ini mengeubah jadi array berpasangan, jadi 1 pasangannya apa dll, karena entries itu akan mengubah objek menjadi sebuah arrray berpasangan, dan karena array itu objek maka bisa di giniiin, dan ebrati pasangan dari setia element array adalah index nya makanya bisa begini ( karena setiap array itu adalah objek)
+            console.log(`${m} adalah mahasiswa ke-${i + 1}`);
+        }
+        
+        console.log("================")
+
+        // 4.nodeList
+        const liNama = document.querySelectorAll(".nama") // jadi ngambil semua value dari elemen apapun yang mempunyai class .nama, dan nanti kalo pake querrySelectorAll biasanya akan menjadi array atau nodeList karena mengambil banyak value sekaligus
+
+        // nodeList = sebuah array yang berisi banyak data yang diambil dari querrySelectorAll
+        
+        // ini kita bisa pake forEach buat ngambil 
+        // liNama.forEach(n => console.log(n.textContent))
+
+        // ini kita pake for of
+        for( const n of liNama){
+            console.log(n.innerHTML)
+        }
+
+        console.log("================")
+        // bisa untuk arguments
+        function tes(){
+            // return arguments.reduce((a, i) => a + i), ini ga bisa karena argumnet itu bukan array, pake forEach juga ga bisa
+
+            // return Array.from(arguments).reduce((a, i) => a + i), ini bisa karena kita ubah dulu argumentsnya menjadi array
+
+            // atau bisa pake for of
+            let jumlah = 0;
+            for (let i of arguments){
+                jumlah += i;
+            }
+            return jumlah
+        }
+        console.log(tes(3,4,5,6,4,3,2,4,4))
+
+        const array = ["Alice", 25];
+
+
+        // INI MAH CUMA BELAJAR AJA
+        // Destructuring array menjadi variabel terpisah
+        const [name, age] = array;
+
+        // Membuat objek dari variabel yang sudah di-destructure
+        const obj = { name, age };
+
+        console.log(obj); // Output: { name: "Alice", age: 25 }
+
+        // const obj = { name: "Alice", age: 25 };
+
+        // Destructuring objek menjadi variabel terpisah
+        const { name3, age3 } = obj;
+
+        // Membuat array dari variabel yang sudah di-destructure
+        const array3 = [name3, age3];
+
+        console.log(array3); // Output: ["Alice", 25]
+
+
+        const array2 = ["Alice", 25];
+
+        // Destructuring array menjadi variabel terpisah
+        const [name2, age2] = array;
+
+        // Membuat objek dari variabel yang sudah di-destructure
+        const obj2 = { name, age };
+
+        console.log(obj2); // Output: { name: "Alice", age: 25 }
+
+        console.log("tesss")
+        let arraydariobj2 = Object.entries(obj2)
+        const  [array1obj2,array2obj2] = arraydariobj2
+        console.log(array1obj2) // Array [ "name", "Alice" ]
+
+        // kita ubah jadi array biasas
+        const hasilNih = [...array1obj2, ...array2obj2]
+        console.log(hasilNih) // Array(4) [ "name", "Alice", "age", 25 ]
+        console.log("atas nif")
+
+
+
+
+        console.log("==========")
+        // Data dari API (array of arrays)
+        const apiData = [["id", 1], ["name", "Alice"], ["role", "Developer"]];
+
+        // Mengubah array menjadi objek
+
+
+        // const dataObj = apiData.reduce((acc, [key, value]) => { // [key, value] =  adalah isi dari nilai yang berisi hasil
+        //     acc[key] = value;
+        //     return acc
+
+        // jadi ini itu sama kayak 
+        // objek.key = value
+        // terus returnya itu adalah objenya yaitu si acc
+        // },{})
+        // console.log(dataObj)
+
+        const hasilObjek = apiData.reduce((acc,[key, value]) => {
+            acc[key] = value;
+            return acc
+        },{})
+
+        // Output: { id: 1, name: "Alice", role: "Developer" }
+        console.log("==================")
+
+        // Data pengguna
+        const user = { id: 1, name: "Alice", role: "Developer" };
+
+        // Mengubah objek menjadi array of arrays
+        const userArray = Object.entries(user);
+
+        console.log(userArray);
+        // Output: [["id", 1], ["name", "Alice"], ["role", "Developer"]]
+
+        console.log("==================")
+        const user2 = {
+        id: 1,
+        name: "Alice",
+        details: {
+            email: "alice@example.com",
+            preferences: {
+            theme: "dark",
+            notifications: true
+            }
+        }
+        };
+
+
+        function nestedObjekLagih(objek){
+            return Object.entries(objek).map(([key, value]) => { // nah disini di, kan sudah jadi array ya, dan valuenya itu isinya adalah value dari property user2 yang sudah berubah menjadi array pasangan
+                if (typeof value === "object" && value !== null && !array.isArray(value)){
+                    return [key, nestedObjekLagih(value)]
+                }else {
+                    return [key, value]
+                }
+            })
+        }
+
+        function nestedObjek(objek) {
+            return Object.entries(objek).map(([key, value]) => {
+                if ( typeof value === "object" && !Array.isArray(value) && value !== null) {
+                    return [key, nestedObjek(value)];
+                }
+                else {
+                    return [key, value]
+                }
+            })
+        }
+
+        const hasil = nestedObjek(user2);
+        console.log(hasil)
+
+        // PENJELASAN
+        //     Object.entries(objek):
+        // Ini mengubah objek menjadi array dari pasangan [key, value].
+        // Contoh: Jika objek = { a: 1, b: 2 }, maka Object.entries(objek) akan menghasilkan [ ['a', 1], ['b', 2] ].
+        // .map(([key, value]) => { ... }):
+        // Method map digunakan untuk mengiterasi setiap elemen dari array yang dihasilkan oleh Object.entries.
+        // Setiap elemen array tersebut adalah pasangan [key, value], di mana:
+        //     key adalah nama property dari objek.
+        //     value adalah nilai dari property tersebut.
+        // value:
+        // value di sini merujuk pada nilai dari property objek yang sedang diproses.
+        // Misalnya, jika objeknya adalah { a: 1, b: { c: 2 } }, maka:
+        //     Pada iterasi pertama, value adalah 1 (nilai dari property a).
+        //     Pada iterasi kedua, value adalah { c: 2 } (nilai dari property b).
+        // Kondisi if:
+        // Jika value adalah objek (typeof value === "object"), bukan null, dan bukan array (!Array.isArray(value)), maka fungsi nestedObjekLagih dipanggil secara rekursif untuk memproses objek tersebut lebih dalam.
+        // Jika value bukan objek, maka langsung mengembalikan [key, value].
+
+
+
+        // function nestedObjectToArray(obj) {
+        // return Object.entries(obj).map(([key, value]) => {
+        //     if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
+        //     return [key, nestedObjectToArray(value)];
+        //     }
+        //     return [key, value];
+        // });
+        // }
+
+        // const userArray2 = nestedObjectToArray(user);
+        // console.log(userArray2);
+
+
+
+        
+    </script>
+</body>
+</html>
