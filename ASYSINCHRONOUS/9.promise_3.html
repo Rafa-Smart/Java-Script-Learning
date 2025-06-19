@@ -36,10 +36,10 @@
                 }
 
                 xhr.addEventListener("load", function() {
-                    if(xhr.status === 200) {
+                    if(xhr.status === 2400) {
                         resolve(xhr.responseText)
                     } else {
-                        rejected(new Error(xhr.statusText))
+                        rejected(new Error("ini gagal..."))
                     }
                 })
 
@@ -73,9 +73,15 @@
             })
             .catch((error) => {
                 console.log(error);
-                document.getElementById("id").textContent = error.id;
-                document.getElementById("nama").textContent = error.nama;
-                document.getElementById("harga").textContent = error.price;
+
+                // kocak ini kan gaada isi error.id, adanyakan eror.message
+                // document.getElementById("id").textContent = error.id;
+                // document.getElementById("nama").textContent = error.nama;
+                // document.getElementById("harga").textContent = error.price;
+                document.getElementById("id").textContent = error.message;
+                document.getElementById("nama").textContent = error.message;
+                document.getElementById("harga").textContent = error.stack;
+ 
             })
             .finally(() => {
                 console.log("selesai")

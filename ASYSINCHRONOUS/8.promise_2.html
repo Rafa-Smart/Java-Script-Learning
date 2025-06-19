@@ -42,11 +42,17 @@
           xhr.open("GET", "api/2_product.json", true);
           xhr.onreadystatechange = () => {
             if (xhr.readyState === 4) {
-              if (xhr.status === 200) {
+              if (xhr.status === 2300) {
                 resolve(xhr.responseText); // ini kalo berhasil
               } else {
                 // ini kalo masalah dengan path dll
-                rejected("data yang kamu cari tidak ada - Error"); // ini kalo gagal
+                // rejected("data yang kamu cari tidak ada - Error"); // ini kalo gagal
+                // ini kenapa ga mauk ke network atau ke instance eror, karena emang kita ga pake
+                // new Error(), jadi emnag ga intstance Error(), tapi masuknya ke else
+
+                // nih biar masuk ke err yg else if instance Error();
+                rejected(new Error("data yang kamu cari tidak ada - Error")); // ini kalo gagal
+
               }
             }
           };
