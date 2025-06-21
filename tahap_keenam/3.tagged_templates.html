@@ -149,6 +149,7 @@
             function high(strings, ...value) {
                 return strings.reduce((hasil, elemen, index) => `${hasil}${elemen} ${value[index] || ""}`, "")
             }
+            
 
             const highlight = high`halo semua perkenalkan nama saya <span class="tes">${nama}</span> dan umur saya <span class="tes">${umur}</span> tahun, dan email saya <span class="tes">${email}</span>`;
 
@@ -251,9 +252,18 @@
             console.log("Input yang Sudah Disanitasi (SQL):", sanitizedSQLInput);
 
 
+            console.log("=================================")
 
+            let nama3 = "rafa"
+            let var2 = "software Engineer"
             
-
+            function testing5(strings, ...value){
+                return strings.reduce((acc,data,index) => {
+                    return `${acc} ${data} ${value[index] ? value[index][0].toUpperCase() + value[index].slice(1) : ""}`
+                },"")
+            }
+            const hasil3 = testing5`haloo semua saya ${nama3} saya adalah ${var2} samal kenal`
+            console.log(hasil3)
 
     </script>
 </body>
