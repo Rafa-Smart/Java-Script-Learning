@@ -110,6 +110,23 @@
             //  dan mengirim paramter tambahan karena di fungis yg dipanggil itu membutuhkan paramter faktor
             console.log(hasil); // Output: 15
 
+            const datanjay = {
+              no:1
+            }
+
+            const anjaylagi = {
+              no:4,
+              tst: function(){
+                return this.no
+              }
+            }
+
+            const hasillagi1 = anjaylagi.tst.call(datanjay);
+            const hasillagi2 = anjaylagi.tst();
+            console.log('ini tstsss')
+            console.log(hasillagi1);
+            console.log(hasillagi2);
+            console.log('ini tstsss')
 
 
 
